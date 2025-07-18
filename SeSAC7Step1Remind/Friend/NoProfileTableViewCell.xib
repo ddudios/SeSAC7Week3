@@ -52,7 +52,7 @@
                         </subviews>
                     </stackView>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LZK-UW-Gho">
-                        <rect key="frame" x="260" y="18" width="44" height="44"/>
+                        <rect key="frame" x="260" y="25" width="44" height="44"/>
                         <color key="backgroundColor" systemColor="systemOrangeColor"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="44" id="DAa-gl-QPE"/>
@@ -66,7 +66,7 @@
                     <constraint firstItem="LZK-UW-Gho" firstAttribute="leading" secondItem="Ned-pW-LU0" secondAttribute="trailing" constant="16" id="4Rd-w4-wQZ"/>
                     <constraint firstAttribute="trailing" secondItem="LZK-UW-Gho" secondAttribute="trailing" constant="16" id="cW2-ok-Cp7"/>
                     <constraint firstItem="LZK-UW-Gho" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="dag-91-6GI"/>
-                    <constraint firstAttribute="bottom" secondItem="Ned-pW-LU0" secondAttribute="bottom" constant="8" id="oeh-F4-jfv"/>
+                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="Ned-pW-LU0" secondAttribute="bottom" constant="8" id="oeh-F4-jfv"/>
                     <constraint firstItem="Ned-pW-LU0" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="vog-nb-8k6"/>
                     <constraint firstItem="Ned-pW-LU0" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="wDB-eU-PNL"/>
                 </constraints>
@@ -83,7 +83,7 @@
     </objects>
     <resources>
         <systemColor name="systemOrangeColor">
-            <color red="1" green="0.58431372549019611" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="1" green="0.58431372550000005" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

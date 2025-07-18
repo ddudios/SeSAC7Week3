@@ -9,7 +9,7 @@ import UIKit
 
 class DetailViewController: UIViewController {
     
-    @IBOutlet var myLabel: UILabel!
+    @IBOutlet private var myLabel: UILabel!
     
 //    var name = ""
 //    var message: String? = ""

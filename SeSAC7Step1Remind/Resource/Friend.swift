@@ -7,12 +7,58 @@
  
 import Foundation
 
+
+// 프로퍼티를 나누는 기준
+// 공간을 얼마나 많이 만들어서 쓰냐/하나만 만들어서 쓰냐
+    // 인스턴스 프로퍼티(var, let) Vs. 타입 프로퍼티(static let, static var)
+    // 공간을 매번 만드느냐/한군데에서 가져다 쓰냐
+// 공간 안에 실질적인 데이터를 갖고 있냐/아니냐
+    // 저장 프로퍼티(=) Vs. 연산 프로퍼티({})
+
 struct Friends {
-    let name: String
+    let name: String  // 저장 프로퍼티 - 값을 가지고 있음
     let message: String?
     let profile_image: String?
     let phone: Int?
     var like: Bool
+    
+    /*
+    func introduce() -> String {  // 함수가 함수로 잘 쓰이고 있나? 매개변수 없으면 함수 대신 다른걸로 합시다
+        if phone != nil {
+            return "\(name)님(010\(phone!))"
+        } else {
+            return "\(name)님"
+        }
+    }
+    */
+    // 변수를 함수처럼 사용
+    // 함수는 아닌데 함수처럼 생김
+    // 매개변수 없이 데이터를 조작해서 최종 String으로 보내줄 수 있음 (식판에 반찬 칸이 없음 Friend(name: String, message: String?) 이런게 없음)
+    // 공간을 직접적으로 차지하지 않고 도와줌
+    var introduce: String {  // 연산 프로퍼티 (등호 없이 중괄호) 계산만 해줌
+        if phone != nil {
+            return "\(name)님(010\(phone!))"
+        } else {
+            return "\(name)님"
+        }
+    }
+    /*
+    // 함수로 만들었을 때 매개변수를 안쓴다면 연산으로 바꿀까?
+    func makeURL() -> URL? {
+        if profile_image != nil {
+            return URL(string: profile_image!)!  // .png로 끝나야 이미지로 바뀌기 때문에 오류
+        } else {
+            return nil
+        }
+    }*/
+    // func () ->를 var :로 바꾸면 연산프로퍼티
+    var makeURL: URL? {
+        if profile_image != nil {
+            return URL(string: profile_image!)!
+        } else {
+            return nil
+        }
+    }
 }
 
 struct FriendsInfo {

@@ -20,7 +20,7 @@ class FriendViewController: UIViewController, UITableViewDelegate, UITableViewDa
     @IBOutlet var mySearchBar: UISearchBar!
     @IBOutlet var myTableView: UITableView!
     
-    var list = FriendsInfo().list  // 필터링된 데이터
+    private var list = FriendsInfo().list  // 필터링된 데이터
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,7 +55,7 @@ class FriendViewController: UIViewController, UITableViewDelegate, UITableViewDa
         myTableView.reloadData()
     }
     
-    @IBAction func filterButtonClicked(_ sender: UIButton) {
+    @IBAction private func filterButtonClicked(_ sender: UIButton) {
         // like == true
         // 전체 데이터는 건드리지 않는다
         // 전체 데이터는 수정하지 않으니까 전체 데이터 가져옴 -> 데이터 덮어쓰기
@@ -80,7 +80,7 @@ class FriendViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     
-    func configureTableView() {
+    private func configureTableView() {
 //        print(#function)
         myTableView.delegate = self  // ⭐️테이블뷰의 부하직원이 이 컨트롤러에 있음을 인식시킴
         myTableView.dataSource = self
@@ -88,13 +88,15 @@ class FriendViewController: UIViewController, UITableViewDelegate, UITableViewDa
         myTableView.backgroundColor = .clear
         
         // 아웃렛연결했으니까 tableView.이 아닌 myTableView.
-        myTableView.rowHeight = 200
+//        myTableView.rowHeight = 200
         let xib = UINib(nibName: "NoProfileTableViewCell", bundle: nil)
         myTableView.register(xib, forCellReuseIdentifier: "NoProfileTableViewCell")
+        let xib2 = UINib(nibName: "ProfileTableViewCell", bundle: nil)
+        myTableView.register(xib2, forCellReuseIdentifier: "ProfileTableViewCell")
     }
     
     @objc
-    func likeButtonClicked(_ sender: UIButton) {
+    private func likeButtonClicked(_ sender: UIButton) {
         print(#function, sender.tag)
         // 0번 셀 버튼 클릭 > list[0].like
         // 1번 셀 버튼 클릭 > list[1].like
@@ -129,16 +131,52 @@ class FriendViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 //        print(#function)
-        let cell = tableView.dequeueReusableCell(withIdentifier: "NoProfileTableViewCell", for: indexPath) as! NoProfileTableViewCell
-        let row = list[indexPath.row]
+        if list[indexPath.row].profile_image == nil {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "NoProfileTableViewCell", for: indexPath) as! NoProfileTableViewCell
+            cell.likeButton.tag = indexPath.row
+            cell.likeButton.addTarget(self, action: #selector(likeButtonClicked), for: .touchUpInside)
+            cell.configureData(list[indexPath.row])
+            return cell
+        } else {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "ProfileTableViewCell", for: indexPath) as! ProfileTableViewCell
+            cell.configureData(row: list[indexPath.row])
+            return cell
+        }
         
+//        let row = list[indexPath.row]
+        
+        /*
+        // 메서드로 분리
+        // 1. 달라지지 않을 정적인 디자인
+        // 2. 데이터 기반: 각각의 셀마다 달라질 수 있는 내용들을 각각의 메서드로 분리
         cell.backgroundColor = .clear
         cell.nameLabel.text = row.name
+        
+        cell.likeButton.layer.cornerRadius = 22
+        cell.likeButton.clipsToBounds = true
+        
+        /*
+        // message가 없다면 label영역 자체를 hidden
+         // 스택뷰에 담겨있어야 hidden을 하면 영역도 같이 사라짐
+//        cell.messageLabel.text = row.message
+        if row.message != nil {
+            cell.messageLabel.text = row.message
+            cell.messageLabel.isHidden = false
+        } else {
+            cell.messageLabel.text = ""  // = nil이여도 상관없으니까, = row.message로 써도 됨
+            cell.messageLabel.isHidden = true
+        }*/
+        // 같은 내용은 밖으로 빼고 분기처리 부분만 넣어도 됨
         cell.messageLabel.text = row.message
+        if row.message != nil {
+            cell.messageLabel.isHidden = false
+        } else {
+            cell.messageLabel.isHidden = true
+        }*/
         
         // (한계) section이 하나일 때만 가능한 코드
         // cell.likeButton.tag에 indexPath.row가 들어있고
-        cell.likeButton.tag = indexPath.row
+//        cell.likeButton.tag = indexPath.row
 //        if indexPath.row == 0 {
 //            cell.likeButton.tag = 0
 //        } else if indexPath.row == 1 {
@@ -153,12 +191,13 @@ class FriendViewController: UIViewController, UITableViewDelegate, UITableViewDa
             cell.likeButton.tag = indexPath.row + 100000  // 절대 인덱스가 겹치지 않게 설정
         }*/
         
-        cell.likeButton.addTarget(self, action: #selector(likeButtonClicked), for: .touchUpInside)
+//        cell.likeButton.addTarget(self, action: #selector(likeButtonClicked), for: .touchUpInside)
         // likeButton과 likeButtonClicked를 연결하는 건데 매개변수로 cell.likeButton를 넣어줌
             // cell.likeButton.addTarget(self, action: #selector(likeButtonClicked(cell.likeButton)), for: .touchUpInside)
         // 함수를 실행해서는 안되기 때문에 매개변수를 지워주는데
         // 매개변수를 쓰지 않지만 매개변수에 버튼에 대한 모든 것이 들어간다, 그 기능까지 다 해주는게 addTarget (11:21)
         
+        /*
         if row.phone != nil {
             cell.phoneLabel.text = "\(row.phone!)"
         } else {
@@ -172,9 +211,19 @@ class FriendViewController: UIViewController, UITableViewDelegate, UITableViewDa
         } else {
             let image = UIImage(systemName: "heart")
             cell.likeButton.setImage(image, for: .normal)
-        }
+        }*/
         
-        return cell
+//        cell.configureData(list[indexPath.row])
+//        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+//        if indexPath.row.isMultiple(of: 2) {
+        if list[indexPath.row].profile_image == nil {
+            return 150
+        } else {
+            return 100
+        }
     }
     
     // 셀 선택됐을 때 화면 전환

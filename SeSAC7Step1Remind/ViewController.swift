@@ -59,18 +59,25 @@ class ViewController: UIViewController {
     @objc  // @: Swift Attributes
     func goFriendButtonClicked() {
         print(#function)
-        // 테이블뷰
-        //1. 어떤 스토리보드에
-        let storyboard = UIStoryboard(name: "Friend", bundle: nil)
-        //2. 어떤 뷰컨트롤러를
-        let vc = storyboard.instantiateViewController(withIdentifier: "FriendViewController") as! FriendViewController
-        //3. 어떤 방식으로 전환할지
-        present(vc, animated: true)
-        
-        // 컬렉션뷰
+//        // 테이블뷰
+//        //1. 어떤 스토리보드에
+//        let storyboard = UIStoryboard(name: "Friend", bundle: nil)
+//        //2. 어떤 뷰컨트롤러를
+//        let vc = storyboard.instantiateViewController(withIdentifier: "FriendViewController") as! FriendViewController
+//        //3. 어떤 방식으로 전환할지
+//        present(vc, animated: true)
+//        
+//        // 컬렉션뷰
 //        let storyboard = UIStoryboard(name: "Friend", bundle: nil)
 //        let vc = storyboard.instantiateViewController(withIdentifier: "FriendCollectionViewController") as! FriendCollectionViewController
 //        present(vc, animated: true)
+                let storyboard = UIStoryboard(name: "Friend", bundle: nil)
+                let vc = storyboard.instantiateViewController(withIdentifier: "FriendViewController") as! FriendViewController
+        
+        // vc.을 통해서 무수히 많이 접근할 수 있는데 누군가 사용할 수도 있으니까 그런 문제를 미연에 방지 -> 쓸일이없는지 생각해보고 막아두기
+//        vc.list
+        
+                present(vc, animated: true)
     }
     
     @objc
@@ -98,6 +105,7 @@ class ViewController: UIViewController {
         */
         //Pass Data 2. contents라는 다음 화면의 공간에 내용을 넣어주기
         vc.contents = "닉네임: \(Int.random(in: 1...100))"
+        
         
         //3. 어떤 방식으로 전환할지
         present(vc, animated: true)
